@@ -1,0 +1,665 @@
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MAT193 Course Map</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f0f4f8; /* Very light blue-grey */
+            color: #1f2937; /* Dark grey text */
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+            padding: 2rem;
+            box-sizing: border-box;
+        }
+        .container {
+            width: 100%;
+            max-width: 1200px;
+            background-color: #ffffff; /* White card background */
+            border-radius: 0.75rem;
+            box-shadow: 0 10px 25px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
+            padding: 2.5rem;
+        }
+        h1, h2, h3 {
+            color: #0d47a1; /* Syllabus-inspired dark blue */
+            font-weight: 700;
+        }
+        .unit-card {
+            border-radius: 0.5rem;
+            padding: 1.5rem;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.06);
+            position: relative;
+            border-left: 0.5rem solid;
+        }
+        .unit-card h3 {
+            font-size: 1.5rem;
+            margin-bottom: 1rem;
+            color: #1565c0;
+            border-bottom: 2px solid;
+            padding-bottom: 0.5rem;
+        }
+
+        /* Unit-specific colors based on the syllabus */
+        .unit-1 {
+            background-color: #fffde7;
+            border-left-color: #f9a825; /* Darker yellow */
+        }
+        .unit-1 h3 {
+            color: #f9a825;
+            border-bottom-color: #fbc02d;
+        }
+        .unit-2 {
+            background-color: #f3e5f5;
+            border-left-color: #6a1b9a; /* Darker purple */
+        }
+        .unit-2 h3 {
+            color: #6a1b9a;
+            border-bottom-color: #ab47bc;
+        }
+        .unit-3 {
+            background-color: #e8f5e9;
+            border-left-color: #2e7d32; /* Darker green */
+        }
+        .unit-3 h3 {
+            color: #2e7d32;
+            border-bottom-color: #81c784;
+        }
+
+        .unit-card .week-grid {
+            display: grid;
+            grid-template-columns: repeat(1, 1fr);
+            gap: 1.5rem;
+        }
+        .week-item {
+            background-color: #f5f5f5; /* Light grey for week items */
+            border: 1px solid #e0e0e0;
+            border-radius: 0.5rem;
+            padding: 1rem;
+            box-shadow: 0 1px 3px rgba(0, 0, 0, 0.08);
+        }
+        .week-item-header {
+            display: flex;
+            align-items: center;
+            font-weight: 600;
+            color: #1a237e; /* Darkest blue text */
+            margin-bottom: 0.5rem;
+        }
+        .week-number {
+            font-size: 1.25rem;
+            font-weight: 800;
+            color: #1565c0;
+            margin-right: 0.75rem;
+        }
+        .project-step {
+            font-weight: 600;
+            padding: 0.25rem 0.5rem;
+            border-radius: 9999px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+        }
+
+        /* Project step-specific colors based on the syllabus pie chart */
+        .project-step.proposal {
+            color: #4a148c; /* Dark purple */
+            background-color: #e1bee7;
+        }
+        .project-step.workshop-step {
+            color: #ad1457; /* Deep pink */
+            background-color: #f8bbd0;
+        }
+        .project-step.reflection-step {
+            color: #1b5e20; /* Dark green */
+            background-color: #c8e6c9;
+        }
+        .project-step.create {
+            color: #ad1457; /* Deep pink */
+            background-color: #f8bbd0;
+        }
+        .project-step.share-out {
+            color: #1b5e20; /* Dark green */
+            background-color: #c8e6c9;
+        }
+        .project-step.log-check {
+            color: #0d47a1; /* Darker blue for log check */
+            background-color: #bbdefb;
+        }
+        .project-step.student-choice {
+            color: #7b1fa2; /* A distinct purple for student choice */
+            background-color: #e0f2f7; /* Lighter blue-green */
+        }
+
+        .math-concept {
+            font-weight: 700;
+            color: #1a237e;
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+        }
+
+        /* Connecting lines for Units */
+        .unit-card:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            bottom: -2.5rem;
+            left: 2rem;
+            width: 4px;
+            height: 2.5rem;
+            background-color: #bbdefb; /* Lighter blue line */
+        }
+        .prep-list {
+            margin-top: 0.5rem;
+            font-size: 0.875rem;
+            color: #424242;
+        }
+        .project-desc-section {
+            background-color: #f0f4f8; /* Light blue-grey for project details */
+            border-radius: 0.5rem;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid #90caf9; /* Accent blue left border */
+        }
+        .project-desc-section p, .project-desc-section ul {
+            margin-bottom: 0.5rem;
+            color: #374151;
+        }
+        .project-desc-section .font-semibold {
+            color: #1a237e;
+        }
+        .reading-list {
+            font-size: 0.875rem;
+            margin-top: 0.5rem;
+        }
+        .reading-list .font-bold {
+            color: #1a237e;
+        }
+        .reading-item {
+            margin-bottom: 0.25rem;
+        }
+        .reading-item a {
+            color: #1565c0;
+            text-decoration: none;
+        }
+        .reading-item a:hover {
+            text-decoration: underline;
+        }
+
+
+        /* Responsive adjustments */
+        @media (min-width: 768px) {
+            .unit-card .week-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        @media (min-width: 1024px) {
+            .unit-card .week-grid {
+                grid-template-columns: repeat(3, 1fr);
+            }
+        }
+    </style>
+</head>
+<body class="bg-gray-50">
+    <div class="container">
+        <h1 class="text-4xl text-center mb-10">MAT193 Course Map</h1>
+        <p class="text-center text-gray-600 mb-12">
+            This map shows the flow of our course from beginning to end, integrating the standard unit cycle with our week-by-week schedule. Use this as your guide to understand what to expect and what you need to do each week.
+        </p>
+
+        <div class="unit-card unit-1">
+            <h3>Unit 1: Seeing Structure — Networks & Visualization <span class="text-base font-normal text-gray-500">(Weeks 1–3)</span></h3>
+            <div class="project-desc-section">
+                <p class="mb-2"><span class="font-semibold">Major Work:</span> Mini-Project 1: Map the Math (visual artifact + 1-page caption)</p>
+                <p class="mb-2"><span class="font-semibold">Guiding Question:</span> Where is mathematics lived on our campus and city?</p>
+                <p class="mb-2"><span class="font-semibold">Math Focus:</span> visualization, networks/graphs, basic topology of spaces, coordinate systems.</p>
+                <p class="mb-2"><span class="font-semibold">Local Anchors:</span> math spaces (Bahen, Fields Institute 222 College St.), public art, seminar venues, makerspaces, student clubs.utoronto</p>
+                <p class="mb-2"><span class="font-semibold">Project 1: Map the Math (choose your lens)</span></p>
+                <p class="mb-2 text-sm">Students produce an interactive or static map + 500–700-word narrative</p>
+                <p class="mb-1 text-sm font-semibold">Ideas:</p>
+                <ul class="list-disc list-inside pl-4 text-sm">
+                    <li>People & Places: map talks/colloquia and who is represented.</li>
+                    <li>Pathways: first-year student journey through math spaces; accessibility audit.</li>
+                    <li>Networks: graph of student groups (Math Union, AWM at U of T) and their links across campus.</li>
+                </ul>
+            </div>
+            <p class="math-focus mt-4">Mini-Project 1: Map the Math — 15%</p>
+            <div class="week-grid mt-4">
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 1</span>
+                        <span class="project-step proposal">Introduction</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Launch + Proposal</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Review the Unit 1 Project Brief.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Come with initial ideas for your project map.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Our Math Experiences & New Possibilities for Math / Disciplinarity</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Wachsmuth, L. P., Runyon, C. R., Drake, J. M., & Dolan, E. L. (2017). <a href="https://doi.org/10.1187/cbe.16-08-0248" target="_blank">Do Biology Students Really Hate Math? Empirical Insights into Undergraduate Life Science Majors’ Emotions about Mathematics</a>. *CBE—Life Sciences Education*.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Rothrock, K. S., & Gay, A. S. (2025). <a href="https://doi.org/10.1007/s40753-023-00229-9" target="_blank">What College Freshmen Believe About Themselves: An Investigation of Mathematical Mindset, Identity, Self-Efficacy, and Use of Self-Regulated Learning Strategies in Mathematics</a>. *International Journal of Research in Undergraduate Mathematics Education*.</li>
+                            <li class="reading-item">Borovik, A. V. (2016). <a href="https://doi.org/10.1007/978-3-319-28582-5_20" target="_blank">Calling a Spade a Spade: Mathematics in the New Pattern of Division of Labour</a>. *Mathematical Cultures*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Introduction to data visualization: The power of a good chart"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 2</span>
+                        <span class="project-step create student-choice">Create & Check-in / Student Choice Reading</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Skills Workshop + Check-in</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Complete the short piece on feminist pedagogy.</li>
+                            <li>Engage with the "Visualizing networks" content.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading, your student choice reading, and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Begin drafting your map artifact.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Looking at Mathematics as a Feminist Scholar</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Burton, L. (2008). <a href="https://doi.org/10.1007/s11858-008-0109-9" target="_blank">Moving towards a feminist epistemology of mathematics</a>. *ZDM*, 40(4), 519–528.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Wertheim interview (specific source needed).</li>
+                            <li class="reading-item">Fellus et al., "What is a network? Nodes, edges, degree" (specific source needed).</li>
+                            <li class="reading-item">One of our favorite studies: A case study of feminist mathematics. (2019, January 23). <a href="https://researchforevidence.fhi360.org/one-of-our-favorite-studies-a-case-study-of-feminist-mathematics" target="_blank">R&E Search for Evidence</a>.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Graph theory basics: Adjacency, paths, and connectedness"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 3</span>
+                        <span class="project-step share-out log-check">Share-out, Reflection & Log Check-in 1</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Gallery Walk + Reflection</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Finalize your "Map the Math" mini-project.</li>
+                            <li>Read the "Mapping Math Spaces" blog post.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Prepare for peer feedback and reflection.</li>
+                            <li>Complete self-assessment for Mathematical Log for instructor feedback.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Teaching with Women in Mind: Pedagogies & Visualizing Structures</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Boaler, J. (1997). <a href="https://doi.org/10.1080/09540259721268" target="_blank">Reclaiming School Mathematics: The girls fight back</a>. *Gender and Education*, 9(3), 285–305.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Hottinger, S. N. (2022). <a href="https://doi.org/10.1007/978-3-030-82658-1_36" target="_blank">Gender and the Cultural Construction of Individualism and Collaboration in Mathematics</a>. *Fifty Years of Women in Mathematics*.</li>
+                            <li class="reading-item">Lindstrom, D. L., et al. (2019). <a href="https://doi.org/10.1080/21532974.2019.1622916" target="_blank">Computational Thinking in Content Areas and Feminine Craft</a>. *Journal of Digital Learning in Teacher Education*.</li>
+                            <li class="reading-item">Abbott, S. *The Proof Stage*. (specific source needed).</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Topological concepts: Distinguishing spaces with invariants"</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="unit-card unit-2">
+            <h3>Unit 2: Uncounted Voices — Archives, Infinity, and Abstraction <span class="text-base font-normal text-gray-500">(Weeks 4–6)</span></h3>
+            <div class="project-desc-section">
+                <p class="mb-2"><span class="font-semibold">Mini-Project 2:</span> "Hidden Figures of U of T"</p>
+                <p class="mb-2"><span class="font-semibold">Guiding Question:</span> Which women have shaped mathematics here, and how do we know?</p>
+                <p class="mb-2"><span class="font-semibold">Math Focus:</span> translating mathematical ideas for public audiences (exposition), logic of evidence.</p>
+                <p class="mb-2"><span class="font-semibold">Local Anchors:</span> U of T Archives & Records Management Services (UTARMS) at the Thomas Fisher Rare Book Library, 4th floor—reading room access Tues–Fri for U of T and the public.</p>
+                <p class="mb-2"><span class="font-semibold">Core Question:</span> Who are the mathematicians and students history forgot—and why?</p>
+                <p class="mb-1 text-sm font-semibold">What students do:</p>
+                <ul class="list-disc list-inside pl-4 text-sm">
+                    <li>Research a little-known figure (or group) from the archives.</li>
+                    <li>Create a mini-exhibit panel or zine page that includes:
+                        <ul class="list-circle list-inside pl-4 text-xs">
+                            <li>A short biography (with archival evidence).</li>
+                            <li>A visual math artifact (diagram, crochet model, or data visualization).</li>
+                            <li>A "Why forgotten?" analysis (structural barriers, gender norms, etc.).</li>
+                        </ul>
+                    </li>
+                    <li>Deliverable: 1–2 panels or 4-page zine spread + sources.</li>
+                </ul>
+            </div>
+            <p class="math-focus mt-4">Mini-Project 2: "Hidden Figures of U of T" — 15%</p>
+            <div class="week-grid mt-4">
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 4</span>
+                        <span class="project-step proposal">Proposal & Workshop</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Proposal + Archive Orientation</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Review the Unit 2 Project Brief.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Begin thinking about your archival research topic.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Biographies of Mathematicians & UofT's Mathematical History</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Ford, Anne Rochon. (1985). <a href="https://www.torontopubliclibrary.ca/detail.jsp?Entt=RDM316390&R=316390" target="_blank">A path not strewn with roses: One hundred years of women at the University of Toronto, 1884-1984</a>. University of Toronto Press.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Lorenat, J. (2022). <a href="https://doi.org/10.1007/978-3-030-82658-1_33" target="_blank">Alice Turner Schafer: Changing Expectations for Women in Mathematics</a>. *Fifty Years of Women in Mathematics*.</li>
+                            <li class="reading-item">Campbell, O. <a href="https://oliviacampbell.substack.com/p/how-period-tracking-birthed-the-calendar" target="_blank">How period tracking birthed the calendar</a>.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Logic and proof: The language of evidence in mathematics"</p>
+                </div>
+
+
+
+
+
+                                <div class="week-item">
+                                    <div class="week-item-header">
+                                        <span class="week-number">Week 5</span>
+                                        <span class="project-step share-out log-check">Share-out, Reflection & Log Check-in 2</span>
+                                    </div>
+                                    <p class="text-gray-700">In Class: Symposium + Reflection</p>
+                                    <div class="prep-list">
+                                        <p class="font-bold">To Prepare:</p>
+                                        <ul class="list-disc list-inside">
+                                            <li>Find initial archival sources to discuss.</li>
+                                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading, your student choice reading, and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                                            <li>Math Journal: continue with your math journal </li>
+                                            <li>Begin drafting your research brief.</li>
+                                        </ul>
+                                    </div>
+
+
+
+                                    <div class="reading-list">
+                                        <p class="font-bold">Weekly Reading Theme: Exclusion in STEM: Silence, Harassment, and Systemic Barriers</p>
+                                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+
+
+
+                                        <ul class="list-disc list-inside ml-4">
+                                        </ul>
+                                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>;
+                                          <li class="reading-item">Aguilar, S. J., & Baek, C. (2020). <a href="https://doi.org/10.1371/journal.pone.0230312" target="_blank">Sexual harassment in academe is underreported, especially by students in the life and physical sciences</a>. *PLOS ONE*.</li>
+                                            <li class="reading-item">Yang, Y., & Carroll, D. W. (n.d.). <a href="https://psycnet.apa.org/record/2016-52319-001" target="_blank">Gendered Microaggressions in Science, Technology, Engineering, and Mathematics</a>.</li>
+                                            <li class="reading-item">Fernando, D., & Prasad, A. (2019). <a href="https://doi.org/10.1177/0018726718809164" target="_blank">Sex-based harassment and organizational silencing: How women are led to reluctant acquiescence in academia</a>. *Human Relations*.</li>
+                                            <li class="reading-item">Dahl, G. B., & Knepper, M. (2021). <a href="https://www.nber.org/papers/w29342" target="_blank">Why Is Workplace Sexual Harassment Underreported? The Value of outside Options amid the Threat of Retaliation</a>.</li>
+                                        </ul>
+                                    </div>
+                                    <p class="math-concept mt-2">Mathematical Thread: "Abstraction in math: From the concrete to the conceptual"</p>
+
+
+                                  </div>
+
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 6</span>
+                        <span class="project-step create student-choice">Create & Check-in / Student Choice Reading</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Skills Workshop + Check-in</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+
+
+
+                        <ul class="list-disc list-inside">
+                          <li>Summarize the hypotheses, methods,and main findings of the social research papers mentioned so far in the AI exercise. </li>
+                            <li>Finalize your Archival Research Brief and submit.</li>
+                            <li>Submit an audio reflection on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Journal.</li>
+                            <li>Prepare to share your findings for peer feedback and discussion.</li>
+                            <li>Math Journal: Come with questions about infinity; explore some unsolved number problems mentioned in class, or others you've fount. I recommend the Collatz Conjecture! </li>
+                        </ul>
+                    </div>
+
+
+                    <div class="reading-list">
+                      <p class="math-concept mt-2">Mathematical Thread: "Logic and proof: The language of evidence in mathematics"</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                              <li class="reading-item"> Cheng, Eugenia.(2018). "The Art of Logic in an Illogical World" Basic Books, 2018.</li>
+                            <li class="reading-item">Part of <a href="https://q.utoronto.ca/courses/404904/pages/reading-research-papers-using-ai?module_item_id=7208143"> paper exercise</a> (do not need to read entire thing): Pavco-Giaccia,Olivia,Fitch Little, Stanley, Jason, Durham, Yarrow  Yarrow Dunham. (2019) <a href="https://online.ucpress.edu/collabra/article/5/1/54/113043/Rationality-is-GenderedxCollabra"target="_blank">Rationality is Gendered.</a>Psychology 1 January 2019; 5 (1): 54. doi: </li>
+
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Ernest, P. (Ed.). (2018). <a href="https://doi.org/10.1007/978-3-319-77760-3" target="_blank">The Philosophy of Mathematics Education Today</a>. Springer International Publishing.</li>
+                            <li class="reading-item">Muntersbjorn, M. (2016). <a href="https://doi.org/10.1007/978-3-319-28582-5_22" target="_blank">Morality and Mathematics</a>. *Mathematical Cultures*.</li>
+                            <li class="reading-item">Rands, K. (2009). <a href="https://doi.org/10.1080/14681810902829646" target="_blank">Mathematical Inqu[ee]ry: Beyond ‘Add-Queers-and-Stir’ elementary mathematics education</a>. *Sex Education*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Set theory and cardinality: When is one infinity bigger than another?"</p>
+                </div>
+
+
+            </div>
+        </div>
+
+
+
+
+        <div class="unit-card unit-3">
+            <h3>Unit 3: Public Voice – Hidden Figures & Belonging <span class="text-base font-normal text-gray-500">(Weeks 7–12)</span></h3>
+            <div class="project-desc-section">
+                <p class="mb-4">
+                    <span class="font-semibold">Capstone Project:</span> This comprehensive capstone project invites you to create a public-facing artifact that illuminates "Hidden Figures" in U of T's mathematical history or explores themes of "Mathematics and Belonging" through a dynamic dialogue between archival findings and contemporary U of T perspectives. Regardless of your chosen path, your artifact must powerfully communicate a mathematical concept visually, designed to captivate and excite a public audience about the ideas you uncover. You will choose one of two distinct tracks to achieve this overarching goal:
+                </p>
+                <div class="mb-4 pl-4 border-l-4 border-gray-300">
+                    <p class="mb-2"><span class="font-semibold text-blue-800">Track A: Exhibit/Zine (Hidden Figures of U of T)</span></p>
+                    <p class="text-sm mt-1 text-gray-700">
+                        Discover and highlight contributions of individuals (particularly women or underrepresented groups) to mathematics or related fields *within the University of Toronto archives*. Your project should explore questions such as: "Why might these figures have been overlooked or forgotten?" "What systemic factors contribute to certain groups being forgotten in mathematics?" and "How can we, through this project, highlight their stories and mathematical impact more effectively?"
+                    </p>
+                </div>
+                <div class="mb-4 pl-4 border-l-4 border-gray-300">
+                    <p class="mb-2"><span class="font-semibold text-blue-800">Track B: Oral History Remix (Mathematics & Belonging: Then & Now)</span></p>
+                    <p class="text-sm mt-1 text-gray-700">
+                        Explore personal narratives and experiences of belonging (or not belonging) in mathematics, specifically by creating a **dialogue between contemporary perspectives and historical accounts found in the U of T archives**. This track invites you to consider how mathematical spaces can be made more inclusive, bridging past and present experiences. Your deliverable will weave together *interviews with current mathematicians or math students in the U of T math department* with other archival materials or historical context. These interviews should not be hypothetical.
+                    </p>
+                </div>
+            </div>
+            <p class="math-focus mt-4">Math Focus: Communicating Mathematics to a Public Audience Visually</p>
+            <p class="text-sm mt-2 text-gray-500">
+                Your public artifact *must* incorporate a **visual representation and explanation** of a relevant mathematical concept.
+            </p>
+            <div class="week-grid">
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 7</span>
+                        <span class="project-step proposal">Proposal</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Vote + Proposal</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Review the Unit 3 Project Brief.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Be ready to propose your project idea.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Belonging & Environment: Fostering Inclusive Mathematical Spaces</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Good, C., Rattan, A., & Dweck, C. S. (2012). <a href="https://doi.org/10.1037/a0026659" target="_blank">Why do women opt out? Sense of belonging and women’s representation in mathematics</a>. *Journal of Personality and Social Psychology*.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Fellus et al. (2020). *Hidden Figures: The American Dream and the Untold Story of the Black Women Who Helped Win the Space Race*. (Consider movie adaptation for broader context).</li>
+                            <li class="reading-item">Derricks, V., & Sekaquaptewa, D. (2021). <a href="https://doi.org/10.1177/03616843211005447" target="_blank">They’re Comparing Me to Her: Social Comparison Perceptions Reduce Belonging and STEM Engagement Among Women With Token Status</a>. *Psychology of Women Quarterly*.</li>
+                            <li class="reading-item">Griffin, C. R. (2023). <a href="https://doi.org/10.31756/jrsmte.622" target="_blank">Women’s Sense of Belonging in Undergraduate Calculus and the Influence of (Inter)Active Learning Opportunities</a>. *Journal of Research in Science, Mathematics and Technology Education*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Geometry of art: Using transformations to create patterns"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 8</span>
+                        <span class="project-step workshop-step student-choice">Workshop / Student Choice Reading</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Skills Workshop</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Read "Designing for Public Audiences" guide.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading, your student choice reading, and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Come prepared with initial design ideas.</li>
+                            <li>Be ready to practice a skill related to your project.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Crafting Inclusive Stories & Data as Narrative</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Hall, J. (2018). <a href="https://doi.org/10.1007/978-3-319-63624-5_10" target="_blank">Gendered? Gender-Neutral? Views of Gender and Mathematics Held by the Canadian General Public</a>. *Transdisciplinarity in Mathematics Education*.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">"Testimonios" (specific source needed).</li>
+                            <li class="reading-item">Azevedo Durval, A. L., & Da Conceição Esquincalha, A. (2024). <a href="https://doi.org/10.37001/ripem.v14i5.3789" target="_blank">Mathematics textbooks as producers of subjectivities based on female figures</a>. *Revista Internacional de Pesquisa em Educação Matemática*.</li>
+                            <li class="reading-item">Risi, S. et al. (2022). <a href="https://doi.org/10.1371/journal.pone.0262027" target="_blank">Diversifying history: A large-scale analysis of changes in researcher demographics and scholarly agendas</a>. *PLOS ONE*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Probability and statistics: Communicating complex ideas with data"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 9</span>
+                        <span class="project-step create student-choice">Create / Student Choice Reading</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Project Check-in</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Read the short piece on inclusive storytelling.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading, your student choice reading, and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Bring your project progress for a check-in.</li>
+                            <li>Come with any questions about your project's data visualization or narrative.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Expanding Mathematical Pedagogies & Equitable Learning Environments</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Yeh, C., & Rubel, L. (2020). <a href="https://link.springer.com/chapter/10.1007/978-3-030-44292-7_11" target="_blank">Queering Mathematics: Disrupting Binary Oppositions in Mathematics Pre-service Teacher Education</a>. *Borders in Mathematics Pre-Service Teacher Education*.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Ernest, P. (Ed.). (2018). <a href="https://doi.org/10.1007/978-3-319-77760-3" target="_blank">The Philosophy of Mathematics Education Today</a>. Springer International Publishing.</li>
+                            <li class="reading-item">Rensaa, R. J., & Fredriksen, H. (2022). <a href="https://doi.org/10.1080/2331186X.2022.2115832" target="_blank">Gender perspectives on a flipped classroom environment</a>. *Cogent Education*.</li>
+                            <li class="reading-item">"Accessibility in Public Scholarship" guide (specific source needed).</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Mathematical modeling: From a real-world story to a math equation"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 10</span>
+                        <span class="project-step create student-choice">Create / Student Choice Reading</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Draft</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Read the "Accessibility in Public Scholarship" guide.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading, your student choice reading, and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Have your project at a solid "draft" stage to work on in class.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Shaping Mathematics: Disrupting Cultures & Promoting Change</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Welde, K. D., & Stepnick, A. (2023). *Disrupting the Culture of Silence: Confronting Gender Inequality and Making Change in Higher Education*. Taylor & Francis.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Dover, T. L., Major, B., & Kaiser, C. R. (2016, January 4). <a href="https://hbr.org/2016/01/diversity-policies-dont-help-women-or-minorities-and-they-make-white-men-feel-threatened" target="_blank">Diversity Policies Rarely Make Companies Fairer, and They Feel Threatening to White Men</a>. *Harvard Business Review*.</li>
+                            <li class="reading-item">Nachtergaele, S. (2024). <a href="https://doi.org/10.1016/j.chembiol.2024.02.005" target="_blank">Combating the myth of “innate genius” in science</a>. *Cell Chemical Biology*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Chaos theory and fractals: Beautiful and unpredictable patterns"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 11</span>
+                        <span class="project-step share-out">Share-out</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Showcase</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Finalize your public artifact.</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Prepare for your showcase presentation.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Changing OUR Campus: Local Context & Institutional Action</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Hall, J., Robinson, T., Flegg, J., & Wilkinson, J. (2022). <a href="https://doi.org/10.1007/s13394-020-00340-z" target="_blank">First-year and final-year undergraduate students’ perceptions of university mathematics departments</a>. *Mathematics Education Research Journal*.</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">CSWEP-SSRC Women in Economics and Mathematics Research Consortium. (n.d.). <a href="https://www.ssrc.org/programs/cswep-women-in-economics-research-consortium/" target="_blank">Social Science Research Council (SSRC)</a>.</li>
+                            <li class="reading-item">Government of Canada, S. C. (2019, May 2). <a href="https://www150.statcan.gc.ca/n1/pub/75-006-x/2019001/article/00006-eng.htm" target="_blank">Persistence and representation of women in STEM programs</a>.</li>
+                            <li class="reading-item">Kaplan, S. (2020, April 1). <a href="https://www.gendereconomy.org/primer-on-the-gendered-impacts-of-covid-19/" target="_blank">Primer on the gendered impacts of COVID-19</a>. Gender and the Economy.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Symmetry groups and group theory: The mathematics of structure"</p>
+                </div>
+                <div class="week-item">
+                    <div class="week-item-header">
+                        <span class="week-number">Week 12</span>
+                        <span class="project-step reflection-step log-check">Reflection & Log Check-in 3</span>
+                    </div>
+                    <p class="text-gray-700">In Class: Reflection</p>
+                    <div class="prep-list">
+                        <p class="font-bold">To Prepare:</p>
+                        <ul class="list-disc list-inside">
+                            <li>Read "hooks, *Teaching to Transgress*".</li>
+                            <li>Submit an audio reflection (1–2 min per component) on: (a) the core reading and any role materials; (b) your mathematical discovery and play in your Mathematical Log.</li>
+                            <li>Prepare your final course reflection.</li>
+                            <li>Complete self-assessment for Mathematical Log for instructor feedback.</li>
+                        </ul>
+                    </div>
+                    <div class="reading-list">
+                        <p class="font-bold">Weekly Reading Theme: Final Reflections: Envisioning Future Mathematical Spaces</p>
+                        <p class="text-gray-700 font-semibold mt-2">Core Reading:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">hooks, b. (1994). *Teaching to Transgress: Education as the Practice of Freedom*. (Specific edition/link needed if available, otherwise general reference).</li>
+                        </ul>
+                        <p class="text-gray-700 font-semibold mt-2">Optional Choices:</p>
+                        <ul class="list-disc list-inside ml-4">
+                            <li class="reading-item">Palmer, C. (1999). *Let Your Life Speak: Listening for the Voice of Vocation*. (from original map).</li>
+                            <li class="reading-item">Zhan, Z. et al. (2023). <a href="https://doi.org/10.1057/s41599-023-01946-x" target="_blank">Key competencies acquired from STEM education: Gender-differentiated parental expectations</a>. *Humanities and Social Sciences Communications*.</li>
+                        </ul>
+                    </div>
+                    <p class="math-concept mt-2">Mathematical Thread: "Final project showcase: Explaining your math concept to a public audience"</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
